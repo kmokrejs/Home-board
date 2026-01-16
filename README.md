@@ -11,8 +11,6 @@ A personal home dashboard built with **Next.js**.
 - **SQLite** (via `better-sqlite3`)
 - **Prettier + ESLint**
 
----
-
 ## 📦 Installation of dependencies
 
 `npm install`
@@ -28,6 +26,7 @@ The DB is created automatically and seeded with example data.
 #### Run `npm run db:init`
 
 This will:
+
 ✅ Create the database file  
 ✅ Create all tables  
 ✅ Seed initial data (only if DB is empty)
