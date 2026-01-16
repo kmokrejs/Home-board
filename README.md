@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏠 Home Board
 
-## Getting Started
+A personal home dashboard built with **Next.js**.
 
-First, run the development server:
+## 🧱 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Next.js 16 (App Router)**
+- **TypeScript**
+- **styled-components** (UI styling)
+- **lucide-react** (icons)
+- **SQLite** (via `better-sqlite3`)
+- **Prettier + ESLint**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Installation of dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`npm install`
 
-## Learn More
+## 🗄 Database Setup (SQLite)
 
-To learn more about Next.js, take a look at the following resources:
+This project uses a **local SQLite database** stored in a single file: `/data/homeboard.db`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🚀 Initialize the Database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The DB is created automatically and seeded with example data.
 
-## Deploy on Vercel
+#### Run `npm run db:init`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This will:
+✅ Create the database file  
+✅ Create all tables  
+✅ Seed initial data (only if DB is empty)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🧬 Database Structure
+
+Can be found in the `migrate.ts` file
+
+## 🏃 Run the App
+
+`npm run dev`
+
+Then open: `http://localhost:3000`
+
+## 🧠 Future Ideas
+
+- Add todos
+- Edit todos
+- Delete todos
+- Shopping list
+- Dashboard (overview of all sections)
+- Home control (connect Home Assistant for smart device control)
+- Calendar view of events (sync with Google calendar)
+- User management
