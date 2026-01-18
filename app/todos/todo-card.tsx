@@ -1,12 +1,11 @@
 'use client';
 
 import styled from 'styled-components';
-import { CalendarClock, Edit, Delete } from 'lucide-react';
-import { useState } from 'react';
+import { CalendarClock, Clock, AlertTriangleIcon } from 'lucide-react';
+import { JSX, useState } from 'react';
 
 export enum Status {
   Pending = 'pending',
-  InProgress = 'in-progress',
   Completed = 'completed',
 }
 
@@ -25,7 +24,19 @@ export const TodoCard = (data: TodoCardData) => {
   return (
     <Card>
       <Header>
-        <DataWrapper>
+        <CategoryTag
+          style={{
+            backgroundColor: data.category
+              ? `hsl(${data.category.charCodeAt(0) * 10}, 60%, 90%)`
+              : '#e0e7ff',
+            color: data.category
+              ? `hsl(${data.category.charCodeAt(0) * 10}, 60%, 30%)`
+              : '#000000ff',
+          }}
+        >
+          {data.category}
+        </CategoryTag>
+        <ActionsWrapper>
           <StyledStatusIndicator
             type="checkbox"
             id={data.title}
@@ -37,67 +48,73 @@ export const TodoCard = (data: TodoCardData) => {
               );
             }}
           />
-          <Title>{data.title}</Title>
-        </DataWrapper>
-        <ActionsWrapper>
-          <button
-            onClick={() => {
-              console.log('Edit clicked', data.title);
-            }}
-          >
-            <Edit size={24} />
-          </button>
-          <button
-            onClick={() => {
-              console.log('Delete clicked', data.title);
-            }}
-          >
-            <Delete size={24} />
-          </button>
         </ActionsWrapper>
       </Header>
       <Body>
-        <DateIndicator deadline={data.deadline} />
+        <Title>{data.title}</Title>
         <Description>{data.description}</Description>
       </Body>
       <Footer>
+        <DateIndicator deadline={data.deadline} />
         <Assignee>
           {data.assignedTo &&
             data.assignedTo.map((assignee) => (
               <AssigneeTag key={assignee} name={assignee} />
             ))}
         </Assignee>
-        <Category>
-          <CategoryTag
-            style={{
-              backgroundColor: data.category
-                ? `hsl(${data.category.charCodeAt(0) * 10}, 60%, 90%)`
-                : '#e0e7ff',
-              color: 'black',
-            }}
-          >
-            {data.category}
-          </CategoryTag>
-        </Category>
       </Footer>
     </Card>
   );
 };
 
 const DateIndicator = ({ deadline }: { deadline?: Date }) => {
-  if (!deadline) return null;
+  if (!deadline) return <div></div>;
+  const dateIndicatorContent = getDateIndicatorContent(deadline);
+  const colorMap: { [key: string]: string } = {
+    black: '#6b7280',
+    red: '#dc2626',
+    yellow: '#faae15ff',
+  };
+  const iconMap: { [key: string]: JSX.Element } = {
+    calendar: <CalendarClock size={30} />,
+    clock: <Clock size={30} />,
+    alert: <AlertTriangleIcon size={30} />,
+  };
 
   return (
-    <DateIndicatorWrapper>
-      <CalendarClock size={14} />
-      {deadline.toLocaleDateString('cs-CZ')}
+    <DateIndicatorWrapper
+      style={{ color: colorMap[dateIndicatorContent.color] }}
+    >
+      {iconMap[dateIndicatorContent.icon]}
+      {dateIndicatorContent.copy}
     </DateIndicatorWrapper>
   );
 };
 
+const getDateIndicatorContent = (deadline: Date) => {
+  const now = new Date();
+  const diffTime = deadline.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays > 1) {
+    return { copy: `${diffDays} dní zbývá`, color: 'black', icon: 'calendar' };
+  } else if (diffDays === 1) {
+    return { copy: 'Zítra', color: 'yellow', icon: 'calendar' };
+  } else if (diffDays === 0) {
+    return { copy: 'Dnes', color: 'black', icon: 'clock' };
+  } else {
+    return { copy: `${-diffDays} dní po termínu`, color: 'red', icon: 'alert' };
+  }
+};
+
 const AssigneeTag = ({ name }: { name: string }) => {
   const color = `hsl(${name.charCodeAt(0) - name.charCodeAt(name.length - 1) * 137.508}, 50%, 50%)`;
-  return <AssigneeIcon style={{ backgroundColor: color }}>{name}</AssigneeIcon>;
+
+  return (
+    <AssigneeTagWrapper style={{ backgroundColor: color, color: 'white' }}>
+      <AssigneeIcon>{name.charAt(0)}</AssigneeIcon>
+    </AssigneeTagWrapper>
+  );
 };
 
 const Header = styled.div`
@@ -106,14 +123,6 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-`;
-
-const DataWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: center;
-  min-width: 0;
 `;
 
 const ActionsWrapper = styled.div`
@@ -141,14 +150,16 @@ const Card = styled.div`
   flex-direction: column;
   background: white;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 8px 12px;
+  border-radius: 28px;
+  padding: 20px 20px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  max-width: 500px;
+  width: 550px;
+  height: 260px;
+  justify-content: space-between;
 `;
 
 const Title = styled.h3`
-  font-size: 21px;
+  font-size: 28px;
   font-weight: 600;
   color: #111827;
 
@@ -161,53 +172,56 @@ const Title = styled.h3`
 `;
 
 const Description = styled.p`
-  font-size: 14px;
+  font-size: 22px;
   color: #4b5563;
+  min-height: 28px;
 `;
 
 const DateIndicatorWrapper = styled.span`
-  font-size: 12px;
+  font-size: 20px;
   color: #6b7280;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 12px;
 `;
 
 const Assignee = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 6px;
+
+  & > div {
+    margin-left: -18px;
+    border: 2px solid white;
+  }
 `;
 
-const AssigneeIcon = styled.div`
-  border-radius: 8px;
-  padding: 4px 8px;
-  display: inline-flex;
+const AssigneeTagWrapper = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  color: #fbfbfbff;
+  border-radius: 50%;
+  height: 46px;
+  width: 46px;
 `;
 
-const Category = styled.span`
-  font-size: 12px;
-  color: #6b7280;
+const AssigneeIcon = styled.p`
+  font-size: 20px;
 `;
 
 const CategoryTag = styled.p`
-  background-color: #e0e7ff;
-  color: #3730a3;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 12px;
+  padding: 2px 20px;
+  border-radius: 28px;
+  font-size: 20px;
   display: inline-block;
+  text-transform: uppercase;
 `;
 
 const StyledStatusIndicator = styled.input`
   appearance: none;
-  width: 28px;
-  height: 28px;
-  border: 2px solid #03080eff;
-  border-radius: 6px;
+  width: 46px;
+  height: 46px;
+  border: 1px solid #808b9865;
+  border-radius: 28px;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -222,7 +236,7 @@ const StyledStatusIndicator = styled.input`
   &:checked::after {
     content: '✓';
     color: white;
-    font-size: 14px;
+    font-size: 20px;
     font-weight: bold;
   }
 `;

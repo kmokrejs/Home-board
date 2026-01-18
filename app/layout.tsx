@@ -15,8 +15,8 @@ export default function RootLayout({
       <body className="bg-white text-black">
         <div className="flex min-h-dvh">
           <Sidebar />
-          <main className="flex-1 bg-white p-8">
-            <div>{children}</div>
+          <main className="min-h-0 flex-1 overflow-hidden bg-[#f7f7f7] p-8">
+            {children}
           </main>
         </div>
       </body>
