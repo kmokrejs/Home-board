@@ -1,6 +1,7 @@
+import styled from 'styled-components';
 import { getTodos } from '@/src/server/data/todos';
 import { Status, TodoCard } from './todo-card';
-import styled from 'styled-components';
+import { PageHeader } from './page-header';
 
 const historyItems = [
   {
@@ -28,29 +29,8 @@ const TodosPage = () => {
 
   return (
     <PageWrapper>
-      <PageHeader>
-        <h1
-          style={{
-            fontSize: '32px',
-            fontWeight: '600',
-            padding: '0',
-            margin: '0',
-          }}
-        >
-          Úkoly
-        </h1>
-        <div
-          style={{
-            display: 'flex',
-            gap: '12px',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}
-        >
-          <p>Filtry</p>
-          <button>Přidat úkol</button>
-        </div>
-      </PageHeader>
+      <PageHeader />
+
       <TodoCardsWrapper>
         {data.map((todo, index) => (
           <TodoCard key={index} {...todo} />
@@ -94,13 +74,6 @@ const PageWrapper = styled.div`
   gap: 24px;
   min-height: 0;
   height: 100%;
-`;
-
-const PageHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const TodoCardsWrapper = styled.div`
