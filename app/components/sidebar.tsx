@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Home, ListTodo } from 'lucide-react';
 
 const nav = [
-  { href: '/dashboard', label: 'Dashboard' },
-  { href: '/todos', label: 'Todo list' },
+  { href: '/dashboard', icon: Home },
+  { href: '/todos', icon: ListTodo },
 ];
 
 function isRouteActive(pathname: string, href: string) {
@@ -16,26 +17,25 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="h-dvh w-42 border-r border-gray-200 bg-gray-50/60 p-4">
+    <div className="h-dvh w-42 border-r border-gray-200 bg-gray-50/60 p-4">
       <nav className="space-y-1">
         {nav.map((item) => {
+          // if active, change color fo the icon
           const active = isRouteActive(pathname, item.href);
 
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={[
-                'group flex items-center gap-2 rounded-md px-2 py-2 text-sm',
-                'text-gray-700 hover:bg-gray-200/60 hover:text-gray-900',
-                active ? 'bg-gray-200/80 font-medium text-gray-900' : '',
-              ].join(' ')}
+              className="group flex items-center justify-center py-2 text-sm text-gray-700 hover:text-blue-300"
             >
-              <span>{item.label}</span>
+              <item.icon
+                className={'h-18 w-18' + (active ? ' text-blue-600' : '')}
+              />
             </Link>
           );
         })}
       </nav>
-    </aside>
+    </div>
   );
 }
