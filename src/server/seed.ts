@@ -36,92 +36,92 @@ export function seedIfEmpty() {
 
   insertTodo.run({
     id: 't1',
-    title: 'Buy groceries',
+    title: 'Koupit potraviny',
     description: null,
     deadline: formatDate(nextWeek),
-    category: 'Personal',
+    category: 'domácnost',
     status: 'pending',
   });
 
   insertTodo.run({
     id: 't2',
-    title: 'Finish project report',
-    description: 'Complete the final report for the XYZ project.',
+    title: 'Dokončit projektovou zprávu',
+    description: 'Dokončit závěrečnou zprávu pro projekt BARÁK.',
     deadline: formatDate(tomorrow),
-    category: 'Work',
-    status: 'in-progress',
+    category: 'práce',
+    status: 'pending',
   });
 
   insertTodo.run({
     id: 't3',
-    title: 'Book dentist appointment',
+    title: 'Rezervovat termín u zubaře',
     description: null,
     deadline: formatDate(pastDate),
-    category: 'Health',
+    category: 'zdraví',
     status: 'completed',
   });
 
   insertTodo.run({
     id: 't4',
-    title: 'Plan weekend trip',
-    description: 'Decide on destination and book accommodations.',
+    title: 'Naplánovat víkendový výlet',
+    description: 'Rozhodnout o destinaci a rezervovat ubytování.',
     deadline: formatDate(today),
-    category: 'Leisure',
+    category: 'rodina',
     status: 'pending',
   });
 
   insertTodo.run({
     id: 't5',
-    title: 'Read new book',
-    description: 'Start reading "The Great Gatsby".',
+    title: 'Přečíst novou knihu',
+    description: 'Začít číst "Velký Gatsby".',
     deadline: null,
-    category: 'Personal Development',
+    category: 'osobní',
     status: 'pending',
   });
 
   insertTodo.run({
     id: 't6',
-    title: 'Organize workspace',
-    description: 'Clean and organize the home office area.',
+    title: 'Uspořádat pracovní prostor',
+    description: 'Vyčistit a uspořádat domácí kancelář.',
     deadline: formatDate(nextWeek),
-    category: 'Productivity',
-    status: 'in-progress',
+    category: 'obecné',
+    status: 'pending',
   });
 
   insertTodo.run({
     id: 't7',
-    title: 'Attend yoga class',
+    title: 'Lekce jógy',
     description: null,
     deadline: formatDate(tomorrow),
-    category: 'Health',
+    category: 'osobní',
     status: 'pending',
   });
 
   insertTodo.run({
     id: 't8',
-    title: 'Update resume',
-    description: 'Add recent experiences and skills.',
+    title: 'Aktualizovat životopis',
+    description: 'Přidat nedávné zkušenosti a dovednosti.',
     deadline: formatDate(nextWeek),
-    category: 'Career',
+    category: 'osobní',
     status: 'pending',
   });
 
   insertTodo.run({
     id: 't9',
-    title: 'Clean the house',
-    description: 'General cleaning of living room, kitchen, and bathroom.',
+    title: 'Uklidit dům',
+    description: 'Obecný úklid obývacího pokoje, kuchyně a koupelny.',
     deadline: formatDate(today),
-    category: 'Chores',
+    category: 'domácnost',
     status: 'completed',
   });
 
   insertTodo.run({
     id: 't10',
-    title: 'Prepare presentation',
-    description: "Create slides for Monday's team meeting.",
+    title: 'Připravit prezentaci',
+    description: 'Vytvořit snímky pro pondělní týmovou schůzku.',
     deadline: formatDate(tomorrow),
-    category: 'Work',
-    status: 'in-progress',
+    category: 'práce',
+    status: 'pending',
   });
 
   // Assignments (many-to-many)

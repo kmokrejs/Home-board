@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { CalendarClock, Clock, AlertTriangleIcon } from 'lucide-react';
 import { JSX, useState } from 'react';
+import colors from '../styles/colors';
 
 export enum Status {
   Pending = 'pending',
@@ -71,9 +72,10 @@ const DateIndicator = ({ deadline }: { deadline?: Date }) => {
   if (!deadline) return <div></div>;
   const dateIndicatorContent = getDateIndicatorContent(deadline);
   const colorMap: { [key: string]: string } = {
-    black: '#6b7280',
-    red: '#dc2626',
-    yellow: '#faae15ff',
+    normal: colors.dateIndocator.normal,
+    overdue: colors.dateIndocator.overdue,
+    dueSoon: colors.dateIndocator.dueSoon,
+    dueToday: colors.dateIndocator.dueToday,
   };
   const iconMap: { [key: string]: JSX.Element } = {
     calendar: <CalendarClock size={30} />,
@@ -97,13 +99,17 @@ const getDateIndicatorContent = (deadline: Date) => {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   if (diffDays > 1) {
-    return { copy: `${diffDays} dní zbývá`, color: 'black', icon: 'calendar' };
+    return { copy: `${diffDays} dní zbývá`, color: 'normal', icon: 'calendar' };
   } else if (diffDays === 1) {
-    return { copy: 'Zítra', color: 'yellow', icon: 'calendar' };
+    return { copy: 'Zítra', color: 'dueSoon', icon: 'calendar' };
   } else if (diffDays === 0) {
-    return { copy: 'Dnes', color: 'black', icon: 'clock' };
+    return { copy: 'Dnes', color: 'dueToday', icon: 'clock' };
   } else {
-    return { copy: `${-diffDays} dní po termínu`, color: 'red', icon: 'alert' };
+    return {
+      copy: `${-diffDays} dní po termínu`,
+      color: 'overdue',
+      icon: 'alert',
+    };
   }
 };
 
@@ -229,8 +235,8 @@ const StyledStatusIndicator = styled.input`
   transition: all 0.35s ease;
 
   &:checked {
-    background: #197610ff;
-    border-color: #197610ff;
+    background: ${colors.primary};
+    border-color: ${colors.primary};
   }
 
   &:checked::after {

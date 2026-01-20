@@ -1,41 +1,57 @@
-import { styled } from 'styled-components';
+'use client';
 
-export const CategorySelector = (
-  title: string,
-  key: string,
-  color: string,
-  onClick: () => void,
-  state: string,
-) => {
-  return (
-    <div
-      onClick={onClick}
-      key={key}
-      style={{
-        backgroundColor:
-          state === key ? 'rgb(18, 96, 99)' : 'rgba(140, 224, 231, 0.42)',
-        padding: '8px 16px',
-        color: state === key ? 'white' : 'black',
-        fontWeight: 500,
-        borderRadius: '60px',
-        display: 'flex',
-        alignItems: 'center',
-        cursor: 'pointer',
-        fontSize: '22px',
-        textTransform: 'Uppercase',
-      }}
-    >
-      {key === 'all' ? null : (
-        <CategoryIndicator style={{ backgroundColor: color }} />
-      )}
-      {title}
-    </div>
-  );
+import { styled } from 'styled-components';
+import colors from '../styles/colors';
+
+type CategorySelectorProps = {
+  category: { title: string; key: string; color: string };
+  onChange: (newCategory: string) => void;
+  selectedCategory: string;
 };
+
+export function CategorySelector({
+  category,
+  onChange,
+  selectedCategory,
+}: CategorySelectorProps) {
+  return (
+    <CategorySelectorWrapper
+      onClick={() => onChange(category.key)}
+      key={category.key}
+      $selected={selectedCategory === category.key}
+    >
+      {category.key === '' ? null : (
+        <CategoryIndicator style={{ backgroundColor: category.color }} />
+      )}
+      {category.title}
+    </CategorySelectorWrapper>
+  );
+}
 
 const CategoryIndicator = styled.div`
   width: 12px;
   height: 12px;
   border-radius: 50%;
   margin-right: 8px;
+`;
+
+const CategorySelectorWrapper = styled.div<{ $selected: boolean }>`
+  display: flex;
+  align-items: center;
+  padding: 8px 20px;
+  border-radius: 60px;
+  cursor: pointer;
+  background-color: ${({ $selected }) =>
+    $selected ? colors.primary : colors.backgroundAlt};
+
+  color: ${({ $selected }) => ($selected ? 'white' : 'rgb(72, 72, 72)')};
+
+  font-weight: 600;
+  font-size: 22px;
+
+  &:hover {
+    background-color: ${({ $selected }) =>
+      $selected ? colors.secondary : colors.primary};
+    color: white;
+  }
 `;
