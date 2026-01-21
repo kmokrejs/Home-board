@@ -1,7 +1,7 @@
 'use client';
 
+import colors from '../../styles/colors';
 import { styled } from 'styled-components';
-import colors from '../styles/colors';
 
 type CategorySelectorProps = {
   category: { title: string; key: string; color: string };

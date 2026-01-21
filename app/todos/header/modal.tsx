@@ -2,6 +2,7 @@
 
 import { CircleX } from 'lucide-react';
 import styled from 'styled-components';
+import colors from '../../styles/colors';
 
 export const Modal = ({
   open,
@@ -15,17 +16,10 @@ export const Modal = ({
   return (
     <Overlay onClick={onClose}>
       <ModalBox onClick={(e) => e.stopPropagation()}>
-        <h1>Empty modal</h1>
-        <button
-          style={{
-            padding: '10px 20px',
-            border: '1px solid',
-            borderRadius: '50px',
-          }}
-          onClick={onClose}
-        >
-          <CircleX size={36} />
-        </button>
+        <CloseButton onClick={onClose}>
+          <CircleX size={36} color={colors.primary} />
+        </CloseButton>
+        <h1>Form for adding Task</h1>
       </ModalBox>
     </Overlay>
   );
@@ -41,13 +35,22 @@ const Overlay = styled.div`
   z-index: 999;
 `;
 
+const CloseButton = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  cursor: pointer;
+`;
+
 const ModalBox = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background: white;
-  padding: 24px;
+  padding: 16px;
   border-radius: 12px;
   min-width: 300px;
   min-height: 200px;

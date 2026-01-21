@@ -1,15 +1,15 @@
 'use client';
 
-import { Users2, CirclePlus } from 'lucide-react';
+import { Users2, CirclePlus, ListTodo } from 'lucide-react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { CategorySelector } from './category-selector';
-import colors from '../styles/colors';
+import colors from '../../styles/colors';
 import { Modal } from './modal';
+import { CategorySelector } from './category-selector';
 
 export const PageHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [users, setUsers] = useState<string>('');
+  const [user, setUser] = useState<string>('');
   const [category, setCategory] = useState<string>('');
 
   const onCategoryChange = (newCategory: string) => {
@@ -26,16 +26,11 @@ export const PageHeader = () => {
   return (
     <>
       <PageHeaderWrapper>
-        <h1
-          style={{
-            fontSize: '32px',
-            fontWeight: '700',
-            padding: '0 0 0 10px',
-            margin: '0',
-          }}
-        >
-          Úkoly
-        </h1>
+        <TitleWrapper>
+          <ListTodo size={36} color={colors.secondary} />
+          <Title>Úkoly</Title>
+        </TitleWrapper>
+
         <FiltersWrapper>
           {mockedCategories.map((cat) => (
             <CategorySelector
@@ -47,9 +42,11 @@ export const PageHeader = () => {
           ))}
           <Users>
             <Users2 size={26} color="white" />
-            <button onClick={() => setUsers('J')}>J</button>
-            <button onClick={() => setUsers('M')}>M</button>
-            <button onClick={() => setUsers('A')}>A</button>
+            {mockedUsers.map((u) => (
+              <button key={u} onClick={() => setUser(u)}>
+                {u}
+              </button>
+            ))}
           </Users>
         </FiltersWrapper>
         <AddTodoButton onClick={onAddTaskClick}>
@@ -103,6 +100,22 @@ const PageHeaderWrapper = styled.div`
   align-items: center;
 `;
 
+const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-left: 10px;
+`;
+
+const Title = styled.h1`
+  font-size: 32px;
+  font-weight: 700;
+  padding: 0;
+  margin: 0;
+  color: ${colors.secondary};
+`;
+
 const Users = styled.div`
   display: flex;
   align-items: center;
@@ -123,7 +136,7 @@ const Users = styled.div`
   }
 
   & > button {
-    margin-left: -12px;
+    margin-left: -8px;
     border: 2px solid white;
   }
 
@@ -145,7 +158,7 @@ const AddTodoButton = styled.button`
   flex-direction: row;
   gap: 8px;
   padding: 10px 20px;
-  background-color: ${colors.primary};
+  background-color: ${colors.secondary};
   color: white;
   border: none;
   border-radius: 50px;
@@ -154,6 +167,6 @@ const AddTodoButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: ${colors.secondary};
+    background-color: ${colors.primary};
   }
 `;
