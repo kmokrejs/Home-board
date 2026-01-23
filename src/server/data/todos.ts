@@ -1,4 +1,32 @@
+import { v4 as uuidv4 } from 'uuid';
 import { db } from '../db';
+
+export type NewTodoInput = {
+  title: string;
+  description?: string;
+  deadline?: Date;
+  category?: string;
+};
+
+export function addTodo({
+  title,
+  description,
+  deadline,
+  category,
+}: NewTodoInput): string {
+  const id = uuidv4();
+  db.prepare(
+    `INSERT INTO todos (id, title, description, deadline, category, status)
+     VALUES (?, ?, ?, ?, ?, 'pending')`,
+  ).run(
+    id,
+    title,
+    description ?? null,
+    deadline ? deadline.toISOString() : null,
+    category ?? null,
+  );
+  return id;
+}
 
 export type TodoFromDb = {
   id: string;
