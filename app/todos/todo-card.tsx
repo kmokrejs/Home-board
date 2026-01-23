@@ -1,9 +1,11 @@
 'use client';
 
 import styled from 'styled-components';
-import { CalendarClock, Clock, AlertTriangleIcon } from 'lucide-react';
+import { CalendarClock, Clock, AlertTriangleIcon, Trash2 } from 'lucide-react';
 import { JSX, useState } from 'react';
+import { SmallModal } from './header/small-modal';
 import colors from '../styles/colors';
+import React from 'react';
 
 export enum Status {
   Pending = 'pending',
@@ -20,51 +22,102 @@ type TodoCardData = {
 };
 
 export const TodoCard = (data: TodoCardData) => {
+  const cardRef = React.useRef<HTMLDivElement | null>(null);
+  const pressTimer = React.useRef<NodeJS.Timeout | null>(null);
+
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [anchor, setAnchor] = useState<{
+    top: number;
+    left: number;
+    width: number;
+  } | null>(null);
+
   const [status, setStatus] = useState<Status>(data.status);
 
+  const openPopoverAtCardTop = () => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    setAnchor({ top: rect.top, left: rect.left, width: rect.width });
+    setPopoverOpen(true);
+  };
+
+  const handlePointerDown = () => {
+    clearPressTimer();
+    pressTimer.current = setTimeout(() => {
+      openPopoverAtCardTop();
+    }, 500);
+  };
+
+  const clearPressTimer = () => {
+    if (pressTimer.current) {
+      clearTimeout(pressTimer.current);
+      pressTimer.current = null;
+    }
+  };
+
   return (
-    <Card>
-      <Header>
-        <CategoryTag
-          style={{
-            backgroundColor: data.category
-              ? `hsl(${data.category.charCodeAt(0) * 10}, 60%, 90%)`
-              : '#e0e7ff',
-            color: data.category
-              ? `hsl(${data.category.charCodeAt(0) * 10}, 60%, 30%)`
-              : '#000000ff',
-          }}
-        >
-          {data.category}
-        </CategoryTag>
-        <ActionsWrapper>
-          <StyledStatusIndicator
-            type="checkbox"
-            id={data.title}
-            checked={status === Status.Completed}
-            onChange={() => {
-              console.log('status changed from ' + status + ' to new');
-              setStatus(
-                status === Status.Completed ? Status.Pending : Status.Completed,
-              );
+    <>
+      <Card
+        ref={cardRef}
+        onPointerDown={handlePointerDown}
+        onPointerUp={clearPressTimer}
+        onPointerLeave={clearPressTimer}
+        onPointerCancel={clearPressTimer}
+      >
+        <Header>
+          <CategoryTag
+            style={{
+              backgroundColor: data.category
+                ? `hsl(${data.category.charCodeAt(0) * 10}, 60%, 90%)`
+                : '#e0e7ff',
+              color: data.category
+                ? `hsl(${data.category.charCodeAt(0) * 10}, 60%, 30%)`
+                : '#000000ff',
             }}
-          />
-        </ActionsWrapper>
-      </Header>
-      <Body>
-        <Title>{data.title}</Title>
-        <Description>{data.description}</Description>
-      </Body>
-      <Footer>
-        <DateIndicator deadline={data.deadline} />
-        <Assignee>
-          {data.assignedTo &&
-            data.assignedTo.map((assignee) => (
-              <AssigneeTag key={assignee} name={assignee} />
-            ))}
-        </Assignee>
-      </Footer>
-    </Card>
+          >
+            {data.category}
+          </CategoryTag>
+          <ActionsWrapper>
+            <StyledStatusIndicator
+              type="checkbox"
+              id={data.title}
+              checked={status === Status.Completed}
+              onChange={() => {
+                console.log('status changed from ' + status + ' to new');
+                setStatus(
+                  status === Status.Completed
+                    ? Status.Pending
+                    : Status.Completed,
+                );
+              }}
+            />
+          </ActionsWrapper>
+        </Header>
+        <Body>
+          <Title>{data.title}</Title>
+          <Description>{data.description}</Description>
+        </Body>
+        <Footer>
+          <DateIndicator deadline={data.deadline} />
+          <Assignee>
+            {data.assignedTo &&
+              data.assignedTo.map((assignee) => (
+                <AssigneeTag key={assignee} name={assignee} />
+              ))}
+          </Assignee>
+        </Footer>
+      </Card>
+      <SmallModal
+        open={popoverOpen}
+        onClose={() => setPopoverOpen(false)}
+        anchor={anchor}
+      >
+        <div style={{ padding: 12 }}>
+          <Trash2 size={30} color="red" />
+        </div>
+      </SmallModal>
+    </>
   );
 };
 

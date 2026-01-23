@@ -29,6 +29,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ id }, { status: 201 });
   } catch (e) {
-    return NextResponse.json({ error: 'Failed to add task' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to add task' + e },
+      { status: 500 },
+    );
   }
 }
