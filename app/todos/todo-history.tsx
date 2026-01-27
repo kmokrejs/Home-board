@@ -7,8 +7,12 @@ import colors from '../styles/colors';
 type HistoryItem = {
   title: string;
   description?: string | null;
-  date: Date;
-  category?: string | null;
+  deadline?: Date;
+  category?: {
+    id: string;
+    name: string;
+    color: string;
+  } | null;
 };
 
 export const TodoHistory = ({
@@ -41,7 +45,7 @@ export const TodoHistory = ({
             <HistoryRow key={index}>
               <RowTitle>{item.title}</RowTitle>
               <p>{item.description ?? ''}</p>
-              <small>{item.date.toLocaleString()}</small>
+              <small>{item.deadline?.toLocaleString()}</small>
             </HistoryRow>
           ))}
         </Entries>

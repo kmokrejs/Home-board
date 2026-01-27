@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, ListTodo } from 'lucide-react';
+import { Home, ListTodo, Settings } from 'lucide-react';
 import colors from '../styles/colors';
 import { styled } from 'styled-components';
 
 const nav = [
   { href: '/dashboard', icon: Home },
   { href: '/todos', icon: ListTodo },
+  { href: '/settings', icon: Settings },
 ];
 
 function isRouteActive(pathname: string, href: string) {

@@ -4,23 +4,40 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import colors from '../styles/colors';
 import { TodoHistory } from './todo-history';
-import { Status, TodoCard } from './todo-card';
+import { TodoCard } from './components/todo-card';
 
 type Todo = {
   id: string;
   title: string;
   description?: string;
   deadline?: Date;
-  category?: string;
-  status: Status;
-  assignedTo: string[];
+  category: {
+    id: string;
+    name: string;
+    color: string;
+  } | null;
+  status: string;
+  assignedTo: {
+    name: string;
+    color: string;
+  }[];
 };
 
 type HistoryItem = {
+  id: string;
   title: string;
   description?: string;
-  date: Date;
-  category?: string;
+  deadline?: Date;
+  category: {
+    id: string;
+    name: string;
+    color: string;
+  } | null;
+  status: string;
+  assignedTo: {
+    name: string;
+    color: string;
+  }[];
 };
 
 export function TodosClient({

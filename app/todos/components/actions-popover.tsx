@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
-export function SmallModal({
+export function ActionsPopover({
   open,
   onClose,
   anchor,

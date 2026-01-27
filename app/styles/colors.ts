@@ -8,7 +8,7 @@ const colors = {
   textSecondary: '#6b7280',
   border: '#d1d5db',
 
-  dateIndocator: {
+  dateIndicator: {
     overdue: '#ef4444',
     dueSoon: '#82a20c',
     dueToday: '#f5b70b',
